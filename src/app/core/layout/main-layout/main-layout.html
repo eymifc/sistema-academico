@@ -1,0 +1,64 @@
+<div class="main-container">
+  <header class="header">
+    <div class="logo" > <img class="logo" src="./LOGO.jpg"  width="40px" height="40px"  alt="imagennn">&nbsp;</div>
+    <div class="menu-color">
+      
+      <ng-container *ngIf="isAuthenticated(); else publicMenu">
+        
+        <ng-container *ngFor="let menu of mainMenu()">
+          <button mat-button [matMenuTriggerFor]="menuDropdown">{{ menu.nombre }}</button>
+          <mat-menu #menuDropdown="matMenu">
+            <button *ngFor="let proceso of menu.procesos" mat-menu-item [routerLink]="proceso.enlace">
+              {{ proceso.nombre }}
+            </button>
+          </mat-menu>
+        </ng-container>
+      </ng-container>
+      
+      <ng-template #publicMenu > 
+        <button mat-button [routerLink]="['/dashboard']">Home</button>
+        <button mat-button [routerLink]="['/contacto']">Contacto</button>
+      </ng-template>
+    </div>
+
+  <div class="user-options">
+
+  <ng-container *ngIf="isAuthenticated(); else guestRoleView">
+  <mat-label>Roles:  &nbsp; </mat-label>
+    <div style=" width: 150px; border: 1px solid white;" appearance="outline"  *ngIf="currentUser() as user">
+      <mat-select class="selecRol" [value]="selectedRole()" (valueChange)="onRoleChange($event)">
+        <mat-option  *ngFor="let role of user.roles" [value]="role">
+          {{ role }}
+        </mat-option>
+      </mat-select>
+    </div>
+
+  </ng-container>
+
+  <ng-template #guestRoleView >
+    <mat-label>Roles  &nbsp; </mat-label>
+        <div  style=" width: 150px; border: 1px solid rgba(255, 255, 255, 0.336);">
+        <mat-select matInput readonly disabled value="Invitado" > Invitado </mat-select>
+      </div>
+  </ng-template>
+</div>
+  </header>
+
+  <main class="content-area">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="footer">
+    <span>USUARIO : {{ userDisplayText() }}</span>
+    <span class="derecho">© 2025 Unidad Educativa Bolivia “2”. Todos los derechos reservados.</span>
+    <span class="fecha">{{ currentDate | date:'fullDate' }}</span> <!-- Formato de fecha completo -->
+
+    <ng-container *ngIf="isAuthenticated(); else showLoginButton">
+      <button mat-stroked-button color="warn" (click)="logout()">Desconectar</button>
+    </ng-container>
+
+    <ng-template #showLoginButton>
+      <button mat-flat-button color="primary" (click)="openLoginDialog()">Conectar</button>
+    </ng-template>
+  </footer>
+</div>

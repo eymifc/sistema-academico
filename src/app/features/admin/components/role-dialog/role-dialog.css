@@ -1,0 +1,30 @@
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio entre el ícono y el texto */
+}
+
+.dialog-header mat-icon {
+  font-size: 28px;
+  height: 28px;
+  width: 28px;
+  color: #673ab7; /* Color primario de Material */
+}
+
+h1[mat-dialog-title] {
+  margin-bottom: 0;
+}
+
+p[mat-dialog-subtitle] {
+  margin-top: 4px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.full-width {
+  width: 100%;
+}
+
+div[mat-dialog-actions] {
+  padding-top: 16px;
+}

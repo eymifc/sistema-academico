@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{ isEditMode ? 'Modificar Rol' : 'Adicionar Nuevo Rol' }}</h1>
+
+<div mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nombre del Rol</mat-label>
+    <input matInput [(ngModel)]="data.nombre" cdkFocusInitial>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="data">Guardar</button>
+</div>

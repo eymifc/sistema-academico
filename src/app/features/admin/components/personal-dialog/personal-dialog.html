@@ -1,0 +1,89 @@
+<h2 mat-dialog-title>{{ data.codp ? 'Modificar Datos de la Persona' : 'Adicionar Nueva Persona' }}</h2>
+
+<mat-dialog-content>
+  <form class="personal-form">
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Cédula</mat-label>
+        <input matInput [(ngModel)]="data.cedula" name="cedula">
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="data.nombre" name="nombre" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Apellido Paterno</mat-label>
+        <input matInput [(ngModel)]="data.ap" name="ap">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Apellido Materno</mat-label>
+        <input matInput [(ngModel)]="data.am" name="am">
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label class="radio-label">Género:</label>
+        <mat-radio-group [(ngModel)]="data.genero" name="genero">
+          <mat-radio-button value="M">Masculino</mat-radio-button>
+          <mat-radio-button value="F">Femenino</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="data.fnac" name="fnac">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label class="radio-label">Estado Civil:</label>
+        <mat-radio-group [(ngModel)]="data.ecivil" name="ecivil">
+          <mat-radio-button value="S">Soltero</mat-radio-button>
+          <mat-radio-button value="C">Casado</mat-radio-button>
+          <mat-radio-button value="D">Divorciado</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Tipo Personal</mat-label>
+        <mat-select [(ngModel)]="data.tipo" name="tipo">
+          <mat-option value="E">Estudiante</mat-option>
+          <mat-option value="P">Profesor</mat-option>
+          <mat-option value="A">Administrativo</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row photo-section">
+      <div *ngIf="data.foto && !selectedFile" class="photo-preview-container">
+        <img [src]="getFotoUrl(data.foto)" alt="Foto actual" class="photo-preview">
+      </div>
+
+      <div>
+          <label for="foto-upload" class="upload-label">
+              <mat-icon>cloud_upload</mat-icon>
+              {{ data.foto ? 'Cambiar Foto...' : 'Seleccionar Foto...' }}
+          </label>
+          <input id="foto-upload" type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+          <span *ngIf="selectedFile" class="file-name">{{ selectedFile.name }}</span>
+      </div>
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button [mat-dialog-close]>Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardar()" cdkFocusInitial>Guardar</button>
+</mat-dialog-actions>

@@ -1,0 +1,58 @@
+.user-management-card {
+  margin: 20px;
+}
+.header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.filters-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.add-button-container {
+  margin-left: auto;
+}
+.add-button .mat-icon {
+  margin-right: 8px;
+}
+.table-container {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+}
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+.status-active {
+  background-color: #d1f4e0;
+  color: #128747;
+}
+.status-inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+.recorrer {
+  margin-left: 30%
+}
+
+
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
