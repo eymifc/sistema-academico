@@ -14,12 +14,12 @@ export class UsuarioService {
  constructor(private http: HttpClient) { }
 
  getUsuarios(
-    searchTerm: string, 
-    estado: number | null, 
-    page: number, 
+    searchTerm: string,
+    estado: number | null,
+    page: number,
     size: number
   ): Observable<PaginatedResponse<Usuario>> {
-    
+
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
@@ -42,7 +42,7 @@ export class UsuarioService {
     habilitarUsuario(login: string): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/${login}/habilitar`, {});
   }
-  
+
 
   asignarAcceso(dto: UsuarioAssignDTO): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/asignar-acceso`, dto);
@@ -51,5 +51,9 @@ export class UsuarioService {
    modificarPassword(codp: number, newPassword: string): Observable<void> {
     const dto = { newPassword: newPassword };
     return this.http.put<void>(`${this.apiUrl}/persona/${codp}/password`, dto);
+  }
+
+  getUsuarioPorCodp(codp: number): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.apiUrl}/persona/${codp}`);
   }
 }

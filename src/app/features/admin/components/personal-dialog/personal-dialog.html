@@ -1,89 +1,117 @@
-<h2 mat-dialog-title>{{ data.codp ? 'Modificar Datos de la Persona' : 'Adicionar Nueva Persona' }}</h2>
+<h2 mat-dialog-title>{{ isEditing ? 'Modificar Datos de la Persona' : 'Adicionar Nueva Persona' }}</h2>
 
 <mat-dialog-content>
-  <form class="personal-form">
-    <div class="form-row">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Cédula</mat-label>
-        <input matInput [(ngModel)]="data.cedula" name="cedula">
-      </mat-form-field>
-    </div>
+  <!-- 1. Conectamos el <form> con nuestro FormGroup del archivo .ts -->
+  <form class="legacy-form" [formGroup]="form">
 
-    <div class="form-row">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Nombre</mat-label>
-        <input matInput [(ngModel)]="data.nombre" name="nombre" required>
-      </mat-form-field>
-    </div>
+    <!-- Fila Cédula -->
+    <label>Cédula:</label>
+    <mat-form-field appearance="fill" class="form-field">
+      <!-- 2. Usamos formControlName para vincular el input -->
+      <input matInput formControlName="cedula">
+      <!-- 3. Mostramos los errores para este control -->
+      <mat-error *ngIf="form.get('cedula')?.hasError('required')">La cédula es requerida.</mat-error>
+      <mat-error *ngIf="form.get('cedula')?.hasError('serverError')">
+        {{ form.get('cedula')?.errors?.['serverError'] }}
+      </mat-error>
+    </mat-form-field>
 
-    <div class="form-row">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Apellido Paterno</mat-label>
-        <input matInput [(ngModel)]="data.ap" name="ap">
-      </mat-form-field>
+    <!-- Fila Nombre -->
+    <label>Nombre:</label>
+    <mat-form-field appearance="fill" class="form-field">
+      <input matInput formControlName="nombre">
+      <mat-error *ngIf="form.get('nombre')?.hasError('required')">El nombre es requerido.</mat-error>
+      <mat-error *ngIf="form.get('nombre')?.hasError('serverError')">
+        {{ form.get('nombre')?.errors?.['serverError'] }}
+      </mat-error>
+    </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Apellido Materno</mat-label>
-        <input matInput [(ngModel)]="data.am" name="am">
-      </mat-form-field>
-    </div>
+    <!-- Fila Apellido Paterno -->
+    <label>Ap. Paterno:</label>
+    <mat-form-field appearance="fill" class="form-field">
+      <input matInput formControlName="ap">
+      <mat-error *ngIf="form.get('ap')?.hasError('required')">El apellido es requerido.</mat-error>
+      <mat-error *ngIf="form.get('ap')?.hasError('serverError')">
+        {{ form.get('ap')?.errors?.['serverError'] }}
+      </mat-error>
+    </mat-form-field>
 
-    <div class="form-row">
-      <div class="form-field">
-        <label class="radio-label">Género:</label>
-        <mat-radio-group [(ngModel)]="data.genero" name="genero">
-          <mat-radio-button value="M">Masculino</mat-radio-button>
-          <mat-radio-button value="F">Femenino</mat-radio-button>
-        </mat-radio-group>
-      </div>
+    <!-- Fila Apellido Materno -->
+    <label>Ap. Materno:</label>
+    <mat-form-field appearance="fill" class="form-field">
+      <input matInput formControlName="am">
+      <mat-error *ngIf="form.get('am')?.hasError('required')">El apellido es requerido.</mat-error>
+      <mat-error *ngIf="form.get('am')?.hasError('serverError')">
+        {{ form.get('am')?.errors?.['serverError'] }}
+      </mat-error>
+    </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Fecha de Nacimiento</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="data.fnac" name="fnac">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-    </div>
+    <!-- Fila Género -->
+    <label>Género:</label>
+    <mat-radio-group formControlName="genero" class="radio-group">
+      <mat-radio-button value="M">Masculino</mat-radio-button>
+      <mat-radio-button value="F">Femenino</mat-radio-button>
+    </mat-radio-group>
 
-    <div class="form-row">
-      <div class="form-field">
-        <label class="radio-label">Estado Civil:</label>
-        <mat-radio-group [(ngModel)]="data.ecivil" name="ecivil">
-          <mat-radio-button value="S">Soltero</mat-radio-button>
-          <mat-radio-button value="C">Casado</mat-radio-button>
-          <mat-radio-button value="D">Divorciado</mat-radio-button>
-        </mat-radio-group>
-      </div>
+    <!-- Fila Fecha de Nacimiento -->
+    <label>F. Nacimiento:</label>
+    <mat-form-field appearance="fill" class="form-field">
+      <input matInput [matDatepicker]="picker" formControlName="fnac">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="form.get('fnac')?.hasError('required')">La fecha es requerida.</mat-error>
+      <mat-error *ngIf="form.get('fnac')?.hasError('serverError')">
+        {{ form.get('fnac')?.errors?.['serverError'] }}
+      </mat-error>
+    </mat-form-field>
 
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>Tipo Personal</mat-label>
-        <mat-select [(ngModel)]="data.tipo" name="tipo">
-          <mat-option value="E">Estudiante</mat-option>
-          <mat-option value="P">Profesor</mat-option>
-          <mat-option value="A">Administrativo</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    
-    <div class="form-row photo-section">
-      <div *ngIf="data.foto && !selectedFile" class="photo-preview-container">
+    <!-- Fila Estado Civil -->
+    <label>E. Civil:</label>
+    <mat-radio-group formControlName="ecivil" class="radio-group">
+      <mat-radio-button value="S">Soltero</mat-radio-button>
+      <mat-radio-button value="C">Casado</mat-radio-button>
+      <mat-radio-button value="D">Divorciado</mat-radio-button>
+    </mat-radio-group>
+
+    <!-- Fila Tipo Personal -->
+    <label>Tipo Personal:</label>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-select formControlName="tipo">
+        <mat-option value="E">Estudiante</mat-option>
+        <mat-option value="P">Profesor</mat-option>
+        <mat-option value="A">Administrativo</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('tipo')?.hasError('required')">Debe seleccionar un tipo.</mat-error>
+      <mat-error *ngIf="form.get('tipo')?.hasError('serverError')">
+        {{ form.get('tipo')?.errors?.['serverError'] }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Fila Foto (esta no es parte del formGroup, se maneja por separado) -->
+    <label>Foto:</label>
+    <div class="photo-section">
+
+      <!-- 1. VISTA PREVIA: Se muestra solo si estamos editando y la persona tiene una foto -->
+      <div *ngIf="isEditing && data.foto" class="photo-preview-container">
         <img [src]="getFotoUrl(data.foto)" alt="Foto actual" class="photo-preview">
       </div>
 
-      <div>
-          <label for="foto-upload" class="upload-label">
-              <mat-icon>cloud_upload</mat-icon>
-              {{ data.foto ? 'Cambiar Foto...' : 'Seleccionar Foto...' }}
-          </label>
-          <input id="foto-upload" type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-          <span *ngIf="selectedFile" class="file-name">{{ selectedFile.name }}</span>
+      <!-- 2. INPUT PARA SUBIR: Siempre visible -->
+      <div class="file-input-wrapper">
+        <!-- Mostramos el nombre del archivo nuevo o el nombre del archivo existente -->
+        <input matInput
+               [value]="selectedFile ? selectedFile.name : (isEditing && data.foto ? data.foto : 'Ningún archivo seleccionado')"
+               readonly>
+        <button mat-stroked-button type="button" (click)="fileInput.click()">Browse</button>
+        <input hidden #fileInput type="file" (change)="onFileSelected($event)" accept="image/*">
       </div>
     </div>
 
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
+<mat-dialog-actions align="center">
+  <!-- 4. El botón Guardar se deshabilita si el formulario es inválido -->
+  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="form.invalid">Guardar</button>
   <button mat-stroked-button [mat-dialog-close]>Cancelar</button>
-  <button mat-flat-button color="primary" (click)="guardar()" cdkFocusInitial>Guardar</button>
 </mat-dialog-actions>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,10 +17,10 @@ import { MatDialogRef } from '@angular/material/dialog';
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatButtonModule, 
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
     MatIconModule,
     ReactiveFormsModule
   ],
@@ -27,17 +28,16 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrl: './login.css'
 })
 export class LoginComponent {
-loginForm!: FormGroup; 
+loginForm!: FormGroup;
   hidePassword = true;
 
   constructor(private fb: FormBuilder, private authService: Auth,private router: Router, public dialogRef: MatDialogRef<LoginComponent>) {}
 
 
   ngOnInit(): void {
-   
     this.loginForm = this.fb.group({
-      login: ['', [Validators.required]], 
-      password: ['', [Validators.required]] 
+      login: ['', [Validators.required]],
+      password: ['', [Validators.required]]
     });
   }
 
@@ -52,10 +52,9 @@ onSubmit(): void {
     }
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: () => { 
+      next: () => {
         console.log('¡Login Exitoso! Cerrando diálogo...');
-     
-        this.dialogRef.close(); 
+        this.dialogRef.close();
       },
       error: (err) => {
         console.error('Error en el login:', err);

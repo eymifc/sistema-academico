@@ -1,6 +1,7 @@
 .user-management-card {
   margin: 20px;
 }
+
 .header-controls {
   display: flex;
   justify-content: space-between;
@@ -8,51 +9,135 @@
   flex-wrap: wrap;
   margin-bottom: 16px;
 }
+
 .filters-group {
   display: flex;
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
 }
+
 .add-button-container {
   margin-left: auto;
 }
+
 .add-button .mat-icon {
   margin-right: 8px;
 }
+
+/* Nuevo estilo para organizar los filtros */
+.filtros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filtros-izquierda {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filtro-item {
+  margin: 0;
+}
+
+.estado-filtros {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-nuevo {
+  margin-left: auto;
+}
+
 .table-container {
   overflow-x: auto;
 }
+
 table {
   width: 100%;
 }
+
 .profile-picture {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   vertical-align: middle;
 }
+
 .status {
   padding: 4px 8px;
   border-radius: 12px;
   font-weight: bold;
 }
+
 .status-active {
   background-color: #d1f4e0;
   color: #128747;
 }
+
 .status-inactive {
   background-color: #f8d7da;
   color: #721c24;
 }
-.recorrer {
-  margin-left: 30%
-}
-
 
 .actions-container {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 4px;
+}
+
+/* Colores para los iconos de acciones */
+.btn-editar {
+  color: #2196F3; /* Azul para editar */
+}
+
+.btn-editar:hover {
+  background-color: rgba(33, 150, 243, 0.1);
+}
+
+.btn-eliminar {
+  color: #F44336; /* Rojo para eliminar */
+}
+
+.btn-eliminar:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.btn-habilitar {
+  color: #4CAF50; /* Verde para habilitar */
+}
+
+.btn-habilitar:hover {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.btn-asignar {
+  color: #FF9800; /* Naranja para asignar acceso */
+}
+
+.btn-asignar:hover {
+  background-color: rgba(255, 152, 0, 0.1);
+}
+
+.btn-modificar {
+  color: #9C27B0; /* Morado para modificar acceso */
+}
+
+.btn-modificar:hover {
+  background-color: rgba(156, 39, 176, 0.1);
+}
+
+.btn-reporte {
+  color: #009688; /* Verde azulado para el reporte/ojito */
+}
+
+.btn-reporte:hover {
+  background-color: rgba(0, 150, 136, 0.1);
 }

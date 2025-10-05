@@ -3,6 +3,14 @@
 
 <mat-dialog-content>
   <form #form="ngForm" class="acceso-form">
+
+    <!-- CAMPO NUEVO: Mostramos el login del usuario -->
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Usuario</mat-label>
+      <!-- Usamos [value] para mostrar el dato y 'disabled' para que no se pueda editar -->
+      <input matInput [value]="data.login" name="login" disabled>
+    </mat-form-field>
+
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Nueva Contraseña</mat-label>
       <input matInput [(ngModel)]="nuevaPassword" name="password" type="password" required>
@@ -11,7 +19,7 @@
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Repetir Nueva Contraseña</mat-label>
       <input matInput [(ngModel)]="confirmPassword" name="confirmPassword" type="password" required>
-      <mat-error *ngIf="nuevaPassword !== confirmPassword">
+      <mat-error *ngIf="nuevaPassword !== confirmPassword && form.controls['confirmPassword']?.touched">
         Las contraseñas no coinciden.
       </mat-error>
     </mat-form-field>

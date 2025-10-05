@@ -1,39 +1,83 @@
+
+.legacy-form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px 10px;
+  align-items: center;
+}
+
+
+.legacy-form label {
+  text-align: right;
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+
+.form-field {
+  width: 100%;
+}
+
+
+.radio-group {
+  display: flex;
+  gap: 15px;
+}
+
+
+.file-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+
+.file-input-wrapper .mat-mdc-form-field-underline {
+  display: none;
+}
+
+mat-dialog-actions {
+  justify-content: center;
+  margin-top: 15px;
+  padding: 0 24px 16px 24px;
+}
+
+
+.mat-form-field.ng-invalid.ng-touched .mat-mdc-form-field-flex {
+  border-color: #f44336;
+}
+.mat-form-field.ng-invalid.ng-touched .mdc-floating-label {
+  color: #f44336;
+}
+
+
+mat-radio-group.ng-invalid.ng-touched {
+  color: #f44336;
+}
+/* Añade esto a tu personal-dialog.css */
+
 .photo-section {
-    align-items: center;
-    gap: 20px;
+  /* Usamos flexbox para alinear la vista previa y el input */
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espacio entre la foto y el botón de subir */
 }
 
 .photo-preview-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+  /* Evita que la imagen se encoja si el espacio es reducido */
+  flex-shrink: 0;
 }
 
 .photo-preview {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #f0f0f0;
+  width: 50px;       /* Tamaño de la vista previa */
+  height: 50px;
+  border-radius: 50%; /* La hacemos redonda */
+  object-fit: cover; /* Evita que la imagen se deforme */
+  border: 2px solid #eee; /* Un borde sutil */
 }
 
-.upload-label {
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.upload-label:hover {
-    background-color: #f5f5f5;
-}
-
-.file-name {
-    margin-left: 10px;
-    font-style: italic;
-    color: #555;
+.file-input-wrapper {
+  /* Hacemos que ocupe el resto del espacio disponible */
+  width: 100%;
 }

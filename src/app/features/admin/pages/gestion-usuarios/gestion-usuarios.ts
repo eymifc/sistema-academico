@@ -48,45 +48,46 @@ import { PdfService } from '../../services/PdfService';
   styleUrl: './gestion-usuarios.css'
 })
 export class GestionUsuarios implements  AfterViewInit{
-  
+
 
   displayedColumns: string[] = ['foto', 'nombreCompleto', 'estado', 'acciones'];
-dataSource = new MatTableDataSource<PersonalListado>([]);
-  totalPersonas = 0; 
+  dataSource = new MatTableDataSource<PersonalListado>([]);
+  totalPersonas = 0;
   isLoadingResults = true;
-  
+
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
 
   filtroControl = new Subject<string>();
-  filtroEstado: number | null = 1; 
+  filtroEstado: number | null = null;
   searchTerm: string = '';
 
-  private refreshTrigger = new Subject<void>(); 
+  private refreshTrigger = new Subject<void>();
 
   constructor(
     private usuarioService: UsuarioService,
     public dialog: MatDialog,
     private personalService: PersonalService,
-    private pdfService: PdfService 
+    private pdfService: PdfService
   ) {}
 
 
   ngAfterViewInit(): void {
 
     const paginatorChanges = this.paginator.page;
-    
- 
+
+
     const filtroChanges = this.filtroControl.pipe(
-      debounceTime(300), 
-      distinctUntilChanged() 
+      debounceTime(300),
+      distinctUntilChanged()
     );
 
 
   merge(paginatorChanges, filtroChanges, this.refreshTrigger)
     .pipe(
       startWith({}),
-      tap(() => this.isLoadingResults = true), 
+      tap(() => this.isLoadingResults = true),
       switchMap(() => {
         const estado = this.filtroEstado;
         return this.personalService.listarPaginado(
@@ -107,7 +108,7 @@ dataSource = new MatTableDataSource<PersonalListado>([]);
     )
     .subscribe(data => (this.dataSource.data = data));
   }
-  
+
 
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -122,38 +123,38 @@ dataSource = new MatTableDataSource<PersonalListado>([]);
 
 
   borrar(usuario: Usuario): void {
-  
+
     console.log('Eliminando (Baja Lógica):', usuario.login);
     this.usuarioService.eliminarUsuario(usuario.login).subscribe(() => {
 
-      this.refreshTrigger.next(); 
+      this.refreshTrigger.next();
     });
   }
 
 
-  
+
     nuevoUsuario(): void {
- 
+
     const dialogRef = this.dialog.open(PersonalDialogComponent, {
       width: '650px',
-      disableClose: true 
+      disableClose: true
     });
 
- 
+
     dialogRef.afterClosed().pipe(
-    
+
       switchMap(result => {
          console.log('Paso 2: Diálogo cerrado. Resultado recibido:', result);
         if (result && result.formData) {
-       
+
           return this.personalService.crearPersonal(result.formData).pipe(
-        
+
             switchMap(nuevoPersonal => {
               if (result.file) {
 
                 return this.personalService.subirFoto(nuevoPersonal.codp, result.file);
               } else {
-           
+
                 return of(nuevoPersonal);
               }
             })
@@ -166,7 +167,7 @@ dataSource = new MatTableDataSource<PersonalListado>([]);
 
       if (personalCreado) {
         console.log('¡Personal creado exitosamente!', personalCreado);
-       
+
        setTimeout(() => this.refreshTrigger.next(), 0);
       }
     });
@@ -175,11 +176,11 @@ dataSource = new MatTableDataSource<PersonalListado>([]);
 
   getFotoUrl(fotoUrl: string): string {
     if (fotoUrl) {
-    
+
     return `http://localhost:8080/uploads/fotos-personal/${fotoUrl}`;
     }
- 
-    return 'assets/img/default-user.png'; 
+
+    return 'assets/img/default-user.png';
   }
 
   editarPersonal(persona: PersonalListado): void {
@@ -187,20 +188,20 @@ dataSource = new MatTableDataSource<PersonalListado>([]);
     this.personalService.getById(persona.codp).pipe(
 
       switchMap(personalCompleto => {
-        
+
         const dialogRef = this.dialog.open(PersonalDialogComponent, {
           width: '650px',
           disableClose: true,
-          data: personalCompleto 
+          data: personalCompleto
         });
         return dialogRef.afterClosed();
       }),
- 
+
       switchMap(result => {
         if (result && result.formData) {
-        
+
           return this.personalService.actualizar(persona.codp, result.formData).pipe(
-   
+
             switchMap(personalActualizado => {
               if (result.file) {
                 return this.personalService.subirFoto(personalActualizado.codp, result.file);
@@ -210,10 +211,10 @@ dataSource = new MatTableDataSource<PersonalListado>([]);
             })
           );
         }
-        return of(null); 
+        return of(null);
       })
     ).subscribe(resultadoFinal => {
-      // 6. Si todo fue exitoso, refrescamos la tabla
+
       if (resultadoFinal) {
         console.log('¡Personal actualizado exitosamente!', resultadoFinal);
         setTimeout(() => this.refreshTrigger.next(), 0);
@@ -225,16 +226,16 @@ dataSource = new MatTableDataSource<PersonalListado>([]);
 
     this.personalService.eliminar(persona.codp).subscribe(() => {
       console.log('Persona dada de baja exitosamente');
-   
+
       setTimeout(() => this.refreshTrigger.next(), 0);
     });
   }
 
     habilitarPersonal(persona: PersonalListado): void {
-    
+
     this.personalService.habilitar(persona.codp).subscribe(() => {
       console.log('Persona habilitada exitosamente');
-    
+
       setTimeout(() => this.refreshTrigger.next(), 0);
     });
   }
@@ -243,7 +244,7 @@ dataSource = new MatTableDataSource<PersonalListado>([]);
     const dialogRef = this.dialog.open(AsignarAccesoDialog, {
       width: '450px',
       disableClose: true,
-      data: { 
+      data: {
         codp: persona.codp,
         nombreCompleto: persona.nombreCompleto
       }
@@ -265,30 +266,41 @@ dataSource = new MatTableDataSource<PersonalListado>([]);
   }
 
   modificarAcceso(persona: PersonalListado): void {
-    const dialogRef = this.dialog.open(ModificarAccesoDialog, {
-      width: '450px',
-      disableClose: true,
-      data: { 
-        codp: persona.codp,
-        nombreCompleto: persona.nombreCompleto
-      }
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && result.newPassword) {
-        this.usuarioService.modificarPassword(persona.codp, result.newPassword).subscribe({
-          next: () => {
-            console.log('Contraseña actualizada exitosamente');
-          },
-          error: (err) => {
-            console.error('Error al modificar la contraseña:', err);
-      
+    this.usuarioService.getUsuarioPorCodp(persona.codp).subscribe(usuario => {
+      if (usuario) {
+
+        const dialogRef = this.dialog.open(ModificarAccesoDialog, {
+          width: '450px',
+          disableClose: true,
+          data: {
+            codp: persona.codp,
+            nombreCompleto: persona.nombreCompleto,
+            login: usuario.login
           }
         });
+
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result && result.newPassword) {
+            this.usuarioService.modificarPassword(persona.codp, result.newPassword).subscribe({
+              next: () => {
+                console.log('Contraseña actualizada exitosamente');
+
+              },
+              error: (err) => {
+                console.error('Error al modificar la contraseña:', err);
+              }
+            });
+          }
+        });
+      } else {
+
+        console.error('Error: No se pudo encontrar el usuario para la persona con codp:', persona.codp);
       }
     });
   }
-  
+
 verReporte(persona: PersonalListado): void {
     // 1. Buscamos los datos completos de la persona
     this.personalService.getById(persona.codp).subscribe(personalCompleto => {
